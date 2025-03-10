@@ -1,12 +1,18 @@
+
 import os
+import sys
 
-from openai import OpenAI
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+#sys.path.append(os.path.abspath('patterns/workflows/1-introduction'))
+
+from settings import get_settings
+
+
+client, model_name = get_settings()
 
 
 completion = client.chat.completions.create(
-    model="gpt-4o",
+    model=model_name,
     messages=[
         {"role": "system", "content": "You're a helpful assistant."},
         {
