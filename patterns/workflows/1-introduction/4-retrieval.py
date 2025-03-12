@@ -1,10 +1,11 @@
 import json
-import os
 
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+from settings import get_settings
+
+client, model_name = get_settings()
 
 """
 docs: https://platform.openai.com/docs/guides/function-calling
@@ -21,7 +22,9 @@ def search_kb(question: str):
     (This is a mock function for demonstration purposes, we don't search)
     """
     with open("kb.json", "r") as f:
-        return json.load(f)
+        j = json.load(f)
+        print(j)
+        return j
 
 
 # --------------------------------------------------------------
@@ -55,7 +58,7 @@ messages = [
 ]
 
 completion = client.chat.completions.create(
-    model="gpt-4o",
+    model=model_name,
     messages=messages,
     tools=tools,
 )
@@ -97,7 +100,7 @@ class KBResponse(BaseModel):
 
 
 completion_2 = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model=model_name,
     messages=messages,
     tools=tools,
     response_format=KBResponse,
@@ -121,7 +124,7 @@ messages = [
 ]
 
 completion_3 = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model=model_name,
     messages=messages,
     tools=tools,
 )

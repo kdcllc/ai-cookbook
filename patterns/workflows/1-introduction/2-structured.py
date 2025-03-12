@@ -1,9 +1,10 @@
-import os
-
 from openai import OpenAI
 from pydantic import BaseModel
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+from settings import get_settings
+
+
+client, model_name = get_settings()
 
 
 # --------------------------------------------------------------
@@ -22,12 +23,12 @@ class CalendarEvent(BaseModel):
 # --------------------------------------------------------------
 
 completion = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model=model_name,
     messages=[
         {"role": "system", "content": "Extract the event information."},
         {
             "role": "user",
-            "content": "Alice and Bob are going to a science fair on Friday.",
+            "content": "Alice and Bob are going to a science fair on Friday 2nd 2025.",
         },
     ],
     response_format=CalendarEvent,

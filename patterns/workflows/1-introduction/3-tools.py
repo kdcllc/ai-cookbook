@@ -1,11 +1,13 @@
 import json
-import os
 
 import requests
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+from settings import get_settings
+
+
+client, model_name = get_settings()
 
 """
 docs: https://platform.openai.com/docs/guides/function-calling
@@ -57,7 +59,7 @@ messages = [
 ]
 
 completion = client.chat.completions.create(
-    model="gpt-4o",
+    model=model_name,
     messages=messages,
     tools=tools,
 )
@@ -103,7 +105,7 @@ class WeatherResponse(BaseModel):
 
 
 completion_2 = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model=model_name,
     messages=messages,
     tools=tools,
     response_format=WeatherResponse,

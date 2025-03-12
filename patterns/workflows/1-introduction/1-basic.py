@@ -1,9 +1,4 @@
 
-import os
-import sys
-
-
-#sys.path.append(os.path.abspath('patterns/workflows/1-introduction'))
 
 from settings import get_settings
 
