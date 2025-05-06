@@ -2,12 +2,13 @@ from docling.chunking import HybridChunker
 from docling.document_converter import DocumentConverter
 from dotenv import load_dotenv
 from openai import OpenAI
+from utils.settings import get_settings
 from utils.tokenizer import OpenAITokenizerWrapper
 
 load_dotenv()
 
 # Initialize OpenAI client (make sure you have OPENAI_API_KEY in your environment variables)
-client = OpenAI()
+client, model_name = get_settings()
 
 
 tokenizer = OpenAITokenizerWrapper()  # Load our custom tokenizer for OpenAI
@@ -35,4 +36,4 @@ chunker = HybridChunker(
 chunk_iter = chunker.chunk(dl_doc=result.document)
 chunks = list(chunk_iter)
 
-len(chunks)
+print(len(chunks))
